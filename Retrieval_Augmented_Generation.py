@@ -19,7 +19,19 @@ class Rag_model:
     def __init__(self):
         self.path = r'output_dfs'
         self.retriver_type = "single"
-        self.rag_modelpath = os.path.join(os.getcwd(), r'Model\mistral-7b-instruct-v0.1.Q5_K_M.gguf')
+        self.rag_modelpath = self.download_model()
+
+    def download_model(self):
+        try:
+            from huggingface_hub import hf_hub_download
+            # Define the model repository and file
+            model_repo = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+            file_name = "mistral-7b-instruct-v0.1.Q5_K_M.gguf"
+            # Download the model file
+            model_path = hf_hub_download(repo_id=model_repo, filename=file_name)
+            return model_path
+        except Exception as e:
+            print(e)
 
     def rag(self):
         try:
@@ -37,14 +49,8 @@ class Rag_model:
             db = FAISS.from_documents(all_splits, embeddings)
 
             callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
-            # Load model directly
-
-            llm_online = Llama.from_pretrained(
-                repo_id="TheBloke/Mistral-7B-Instruct-v0.1-GGUF",
-                filename="mistral-7b-instruct-v0.1.Q2_K.gguf",
-            )
-            # llm = LlamaCpp(model_path=self.rag_modelpath, n_ctx=5000, n_gpu_layers=1, n_batch=512,
-            #                f16_kv=True, callback_manager=callback_manager, verbose=True)
+            llm = LlamaCpp(model_path=self.rag_modelpath, n_ctx=5000, n_gpu_layers=1, n_batch=512,
+                           f16_kv=True, callback_manager=callback_manager, verbose=True)
             # prompt = ChatPromptTemplate(
             #     input_variables=['context', 'question'],
             #     messages=[HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['context', 'question'],
@@ -52,9 +58,9 @@ class Rag_model:
             if self.retriver_type=="single":
                 retriever = db.as_retriever(search_type="mmr", search_kwargs={"k": 8})
             elif self.retriver_type=="multiple":
-                retriever = MultiQueryRetriever.from_llm(retriever=db.as_retriever(), llm=llm_online)
+                retriever = MultiQueryRetriever.from_llm(retriever=db.as_retriever(), llm=llm)
 
-            qachain = RetrievalQA.from_chain_type(llm=llm_online, chain_type="stuff", retriever=retriever,
+            qachain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever,
                                                   return_source_documents=True)
             # response = qachain.invoke({"query": self.query})
             # docs = retriever.get_relevant_documents(self.query)
