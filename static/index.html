@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="style.css">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG</title>
+    <script>
+        async function uploadFiles() {
+            const input = document.getElementById('files');
+            const formData = new FormData();
+
+            // Append each file to the form data
+            for (let i = 0; i < input.files.length; i++) {
+                formData.append("files", input.files[i]);
+            }
+
+            // Send the files to the backend
+            const response = await fetch('/upload-files/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Files uploaded successfully: ${result.files}`);
+            } else {
+                const errorMessage = await response.text();
+                alert(`Error: ${errorMessage}`);
+            }
+        }
+
+        async function runBackendFunction() {
+            // Send a POST request to the backend endpoint
+            const response = await fetch('/run-function/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+             if (response.ok) {
+                const result = await response.json();
+                // Display the result
+                alert(`Success: ${result.message}`);
+            } else {
+                const errorMessage = await response.text();
+                alert(`Error: ${errorMessage}`);
+            }
+        }
+        async function askQuestion() {
+            const question = document.getElementById('question').value;
+            const chatbox = document.getElementById('chatbox');
+
+            if (!question) {
+                alert("Please enter a question");
+                return;
+            }
+
+            const response = await fetch('/ask/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question })  // Send the question as JSON in the body
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                chatbox.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+                chatbox.innerHTML += `<p><strong>Bot:</strong> ${result.response}</p>`;
+            } else {
+                const errorMessage = await response.text();
+                alert(`Error: ${errorMessage}`);
+                }
+            }
+    </script>
+</head>
+<body>
+    <h1>Retrieval-Augmented Generation (RAG) For Provided the Survey Datasets</h1>
+    <!-- CSV & Excel File Upload -->
+    <input type="file" id="files" accept=".csv, .xlsx" multiple><br><br>
+    <button onclick="uploadFiles()">Upload Files</button>
+
+<!--    <input><br><br>-->
+    <button onclick="runBackendFunction()">Preprocess Data</button>
+
+    <!-- Chatbox for QA -->
+    <div id="chatbox"></div>
+
+    <!-- Question Input -->
+    <input type="text" id="question" placeholder="Ask a question..."><br>
+    <button onclick="askQuestion()">Ask</button>
+</body>
+</html>
