@@ -26,7 +26,7 @@ class Rag_model:
             from huggingface_hub import hf_hub_download
             # Define the model repository and file
             model_repo = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-            file_name = "mistral-7b-instruct-v0.1.Q5_K_M.gguf"
+            file_name = "mistral-7b-instruct-v0.1.Q2_K.gguf"
             # Download the model file
             model_path = hf_hub_download(repo_id=model_repo, filename=file_name)
             return model_path
