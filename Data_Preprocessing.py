@@ -14,7 +14,13 @@ class convert_survey_excel_to_csv():
             for file in os.listdir(self.input_folder):
                 if file.endswith('.xlsx') or file.endswith('.xls'):
                     df = pd.read_excel(os.path.join(self.input_folder, file), skiprows=[2,3])
-                    self.data_preprocess(df)
+                    if self.data_preprocess(df):
+                        print("Sruvey Excel File(s) Preprocessed successfully")
+                    else:
+                        df.dropna(how='all', axis=0, inplace=True)
+                        df = df.reset_index(drop=True)
+                        df.dropna(how='all', axis=1, inplace=True)
+                        df.to_csv(os.path.join(self.csv_folder, file))                   
                 elif file.endswith('.csv'):
                     df = pd.read_csv(os.path.join(self.input_folder, file))
                     df.dropna(how='all', axis=0, inplace=True)
@@ -86,10 +92,10 @@ class convert_survey_excel_to_csv():
                 cleaned_df = df
             # cleaned_df.to_csv(os.path.join(self.csv_folder, f'Cleaned_data.csv'), index=False)
             self.Spliting_the_data(df)
-            return df, cleaned_df
+            return True
         except Exception as e:
             print(e)
-            return e, "Error"
+            return False
 
     def Spliting_the_data(self, df, ignore_column="Demographics"):
         try:
