@@ -1,5 +1,10 @@
 faiss-cpu==1.9.0
 fastapi==0.115.0
+filelock==3.16.1
+filetype==1.2.0
+frozenlist==1.4.1
+fsspec==2024.9.0
+greenlet==3.1.1
 huggingface-hub==0.25.2
 langchain==0.3.3
 langchain-community==0.3.2
@@ -20,6 +25,8 @@ pydantic_core==2.23.4
 pypdf==5.0.1
 python-dateutil==2.8.2
 python-dotenv==1.0.1
+python-magic==0.4.27
+python-magic-bin==0.4.14
 python-multipart==0.0.12
 safetensors==0.4.5
 scikit-learn==1.5.2
@@ -29,4 +36,3 @@ tokenizers==0.20.0
 torch==2.4.1
 tqdm==4.66.5
 transformers==4.45.2
-uvicorn==0.31.1

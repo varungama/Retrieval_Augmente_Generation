@@ -1,0 +1,10 @@
+2024-10-17 04:39:11,870 - main - INFO - Process Started
+2024-10-17 04:39:22,166 - main - INFO - Files Uploaded
+2024-10-17 04:39:24,209 - Data_Preprocessing - INFO - output Folder is empty
+2024-10-17 04:39:24,210 - Data_Preprocessing - INFO - Removed old survey files from the output folder
+2024-10-17 04:39:25,781 - Data_Preprocessing - INFO - Data Preprocessing started
+2024-10-17 04:39:25,835 - Data_Preprocessing - INFO - Splitting the data into CSV chunks
+2024-10-17 04:39:25,880 - Data_Preprocessing - INFO - Dataset 1 (Sustainability Research Results).xlsx is cleaned and saved as csv chucks in output folder.
+2024-10-17 04:39:26,195 - Data_Preprocessing - INFO - Data Preprocessing started
+2024-10-17 04:39:26,215 - Data_Preprocessing - INFO - Splitting the data into CSV chunks
+2024-10-17 04:39:26,252 - Data_Preprocessing - INFO - Dataset 2 (Christmas Research Results).xlsx is cleaned and saved as csv chucks in output folder.

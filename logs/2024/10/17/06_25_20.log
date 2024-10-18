@@ -1,0 +1,4 @@
+2024-10-17 06:25:21,238 - main - INFO - Process Started
+2024-10-17 06:25:21,469 - Retrieval_Augmented_Generation - INFO - Model downlaoded from Huggingface Hub
+2024-10-17 06:25:21,470 - Retrieval_Augmented_Generation - INFO - Loading the RAG model
+2024-10-17 06:25:28,511 - Retrieval_Augmented_Generation - INFO - Creating the FAISS db vector

@@ -1,0 +1,47 @@
+2024-10-17 06:20:46,190 - main - INFO - Process Started
+2024-10-17 06:20:46,506 - Retrieval_Augmented_Generation - INFO - Model downlaoded from Huggingface Hub
+2024-10-17 06:20:46,507 - Retrieval_Augmented_Generation - INFO - Loading the RAG model
+2024-10-17 06:20:53,258 - Retrieval_Augmented_Generation - INFO - Creating the FAISS db vector
+2024-10-17 06:20:53,981 - main - INFO - model invoked started
+2024-10-17 06:20:53,982 - main - ERROR - function ask_question : 'Question' object has no attribute 'replace'
+Traceback (most recent call last):
+  File "C:\Varun\Demo-app\main.py", line 64, in ask_question
+    docs = retriever.get_relevant_documents(question)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\_api\deprecation.py", line 182, in warning_emitting_wrapper
+    return wrapped(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\retrievers.py", line 397, in get_relevant_documents
+    return self.invoke(query, config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\retrievers.py", line 254, in invoke
+    raise e
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\retrievers.py", line 247, in invoke
+    result = self._get_relevant_documents(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\vectorstores\base.py", line 1083, in _get_relevant_documents
+    self.vectorstore.similarity_search_with_relevance_scores(
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_core\vectorstores\base.py", line 560, in similarity_search_with_relevance_scores
+    docs_and_similarities = self._similarity_search_with_relevance_scores(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\vectorstores\faiss.py", line 1296, in _similarity_search_with_relevance_scores
+    docs_and_scores = self.similarity_search_with_score(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\vectorstores\faiss.py", line 513, in similarity_search_with_score
+    embedding = self._embed_query(query)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\vectorstores\faiss.py", line 265, in _embed_query
+    return self.embedding_function.embed_query(text)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\embeddings\huggingface.py", line 130, in embed_query
+    return self.embed_documents([text])[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\embeddings\huggingface.py", line 109, in embed_documents
+    texts = list(map(lambda x: x.replace("\n", " "), texts))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\langchain_community\embeddings\huggingface.py", line 109, in <lambda>
+    texts = list(map(lambda x: x.replace("\n", " "), texts))
+                               ^^^^^^^^^
+  File "C:\Users\LENOVO\anaconda3\envs\bounce\Lib\site-packages\pydantic\main.py", line 856, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'Question' object has no attribute 'replace'

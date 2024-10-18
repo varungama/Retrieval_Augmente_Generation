@@ -1,0 +1,11 @@
+2024-10-17 06:31:05,063 - main - INFO - Process Started
+2024-10-17 06:31:05,331 - Retrieval_Augmented_Generation - INFO - Model downlaoded from Huggingface Hub
+2024-10-17 06:31:05,331 - Retrieval_Augmented_Generation - INFO - Loading the RAG model
+2024-10-17 06:31:12,539 - Retrieval_Augmented_Generation - INFO - Creating the FAISS db vector
+2024-10-17 06:31:23,069 - main - INFO - model invoked started
+2024-10-17 06:31:23,069 - main - ERROR - function ask_question : 'tuple' object has no attribute 'invoke'
+Traceback (most recent call last):
+  File "C:\Varun\Demo-app\main.py", line 66, in ask_question
+    retrieved_output = model.invoke({"query": question.question})
+                       ^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'invoke'

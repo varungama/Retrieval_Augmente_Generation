@@ -1,35 +1,36 @@
 import os, shutil
 import pandas as pd
 import numpy as np
+from custom_logger import get_logger
 
 class convert_survey_excel_to_csv():
 
-    def __init__(self):
+    def __init__(self, log_filename):
+        self.logger = get_logger(log_filename)
         self.input_folder = os.path.join(os.getcwd(), r"Input")
-        self.csv_folder = r"output_dfs"
+        self.csv_folder = r"output"
 
     def read_data(self):
         try:
             self.verify_folder(self.csv_folder)
+            self.logger.info("Removed old survey files from the output folder")
             for file in os.listdir(self.input_folder):
                 if file.endswith('.xlsx') or file.endswith('.xls'):
                     df = pd.read_excel(os.path.join(self.input_folder, file), skiprows=[2,3])
                     if self.data_preprocess(df):
-                        print("Sruvey Excel File(s) Preprocessed successfully")
+                        self.logger.info(f"{file} is cleaned and saved as csv chucks in output folder.")
                     else:
-                        df.dropna(how='all', axis=0, inplace=True)
-                        df = df.reset_index(drop=True)
-                        df.dropna(how='all', axis=1, inplace=True)
-                        df.to_csv(os.path.join(self.csv_folder, file))                   
+                        self.logger.error(f"Error processing the survey file {file}")
                 elif file.endswith('.csv'):
                     df = pd.read_csv(os.path.join(self.input_folder, file))
                     df.dropna(how='all', axis=0, inplace=True)
                     df = df.reset_index(drop=True)
                     df.dropna(how='all', axis=1, inplace=True)
                     df.to_csv(os.path.join(self.csv_folder, file))
+                    self.logger.info(f"{file} Csv file is cleaned and saved in output folder")
             return True
         except Exception as e:
-            print(e)
+            self.logger.error(f"function read_data : {e}", exc_info=True)
             return False
 
     def fill_with_previous_string_and_extra_text(self, column):
@@ -40,9 +41,12 @@ class convert_survey_excel_to_csv():
         return column
 
     def remove_punctuation(self, text):
-        text = text.replace('\n', ' ')
-        return text.translate(str.maketrans("", "", "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"))
-
+        try:
+            text = text.replace('\n', ' ')
+            return text.translate(str.maketrans("", "", "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"))
+        except Exception as e:
+            self.logger.error(f"function remove_punctuation : {e}", exc_info=True)
+            return text
     def verify_folder(self, folder_path):
         try:
             if os.path.exists(folder_path):
@@ -59,16 +63,18 @@ class convert_survey_excel_to_csv():
                             # If it's a subfolder, you can delete it recursively using shutil.rmtree()
                             shutil.rmtree(file_path)
                 else:
-                    print("The folder is empty.")
+                    self.logger.info(f"{folder_path} Folder is empty")
             else:
                 os.makedirs(folder_path, exist_ok=True)
+                self.logger.info(f"Created a Folder with name {folder_path}")
             return True
         except Exception as e:
-            print(e)
+            self.logger.error(f"function verify_folder : {e}", exc_info=True)
             return e
 
     def data_preprocess(self, df, do=False):
         try:
+            self.logger.info("Data Preprocessing started")
             pd.set_option('future.no_silent_downcasting', True)
             stop_column = 'Question 2'
             for i, col in enumerate(df.columns):
@@ -84,7 +90,10 @@ class convert_survey_excel_to_csv():
             df.dropna(how='all', axis=0, inplace=True)
             df = df.reset_index(drop=True)
             df.dropna(how='all', axis=1, inplace=True)
-            df['Demographics'] = self.fill_with_previous_string_and_extra_text(df['Demographics'])
+            try:
+                df['Demographics'] = self.fill_with_previous_string_and_extra_text(df['Demographics'])
+            except Exception as e:
+                self.logger.error(f"function fill_with_previous_string_and_extra_text : {e}", exc_info=True)
             if do:
                 mask = df.drop(columns=["Demographics"]).isna().all(axis=1)
                 cleaned_df = df[~mask].reset_index(drop=True)
@@ -94,11 +103,12 @@ class convert_survey_excel_to_csv():
             self.Spliting_the_data(df)
             return True
         except Exception as e:
-            print(e)
+            self.logger.error(f"function data_preprocess : {e}", exc_info=True)
             return False
 
     def Spliting_the_data(self, df, ignore_column="Demographics"):
         try:
+            self.logger.info(f"Splitting the data into CSV chunks")
             question_df = pd.DataFrame()
             # Create a mask to identify rows where all columns except 'ID' are NaN
             mask = df.drop(columns=[ignore_column]).isna().all(axis=1)
@@ -129,7 +139,7 @@ class convert_survey_excel_to_csv():
                     question_df = pd.concat([question_df, sub_df], axis=0, ignore_index=True)
                 else:
                     sub_df.columns = [cleaned_text] + list(sub_df.columns[1:])
-                    sub_df[cleaned_text] = sub_df[cleaned_text].apply(lambda x: cleaned_text + " : " + str(x))
+                    # sub_df[cleaned_text] = sub_df[cleaned_text].apply(lambda x: cleaned_text + " : " + str(x))
                     if os.path.exists(os.path.join(self.csv_folder, ids_with_true_mask[1])):
                         sub_df.to_csv(os.path.join(self.csv_folder, ids_with_true_mask[1], f'{filename}.csv'), index=False)
                     else:
@@ -143,5 +153,5 @@ class convert_survey_excel_to_csv():
                 question_df.to_csv(os.path.join(self.csv_folder, ids_with_true_mask[1], f'Questions.csv'), index=False)
             return ids_with_true_mask
         except Exception as e:
-            print(e)
+            self.logger.error(f"function data_preprocess : {e}", exc_info=True)
             return e
