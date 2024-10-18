@@ -5,3 +5,5 @@ This project integrates a server using Python and Langchain with FastAPI that ac
 It is specially designed to support Survey Excel files.
 
 
+('''set FORCE_CMAKE=1 && set CMAKE_ARGS=-DLLAMA_CUBLAS=on -DLLAMA_AVX=off -DLLAMA_AVX2=off -DLLAMA_FMA=off
+pip install llama-cpp-python --no-cache-dir''')
