@@ -10,7 +10,7 @@ Since the model is running CPU it will take a while.
 
 If you want to use GPU for fast processing.
 
-##The commands to successfully install on windows (using cmd) are as follows:
+## The commands to successfully install on windows (using cmd) are as follows:
 
 ```bash
 set FORCE_CMAKE=1 && set CMAKE_ARGS=-DLLAMA_CUBLAS=on -DLLAMA_AVX=off -DLLAMA_AVX2=off -DLLAMA_FMA=off
