@@ -6,6 +6,7 @@ It is specially designed to support Survey Excel files.
 
 ## Key Features
 **Text Splitting:** Divides text into manageable chunks for embedding.
+
 **Embeddings:** Generates text embeddings using the sentence-transformers/all-MiniLM-l6-v2 model from HuggingFace.
 **Vector Store:** Stores and retrieves embeddings using FAISS DB.
 **Interactive Q&A:** Allows users to ask questions and get responses based on the stored embeddings.
