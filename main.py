@@ -23,7 +23,7 @@ async def backend_function():
         preprocessing_status = convert_survey_excel_to_csv(log_filename).read_data()
         if preprocessing_status:
             global model#, retriever
-            model, retriever = Rag_model(log_filename).rag(new_data=True)
+            model = Rag_model(log_filename).rag(new_data=True)
             # Replace this with your actual logic
             return {"status": "success", "message": "Data Preprocessed sucessfully"}
         else:
