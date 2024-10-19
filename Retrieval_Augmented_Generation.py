@@ -15,7 +15,7 @@ from langchain.chains import RetrievalQA
 from custom_logger import get_logger
 
 class Rag_model:
-    def __init__(self, log_filename, folder_path=r'default_data', device = "cpu", search_type="similarity_score_threshold"):
+    def __init__(self, log_filename, folder_path=r'Input', device = "cpu", search_type="similarity_score_threshold"):
         self.logger = get_logger(log_filename)
         self.path = folder_path
         self.search_type = search_type
