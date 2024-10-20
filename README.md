@@ -53,3 +53,6 @@ cd llama-cpp-python-main
 set FORCE_CMAKE=1 && set "CMAKE_ARGS=-DLLAMA_CUBLAS=on -DLLAMA_AVX=off -DLLAMA_AVX2=off -DLLAMA_FMA=off"
 python -m pip install .[all]
 ```
+Demo:
+
+[Download/View the Video](https://github.com/varungama/Retrieval_Augmente_Generation/blob/9cb6ffeebc2aa029df40409f436f5870f183ff8a/static/Demo.mp4)
