@@ -22,7 +22,7 @@ pip install -r /path/to/requirements.txt
 **Run the FastAPI application using Uvicorn:**
 Go to the folder directory
 ```bash
-cd RAG
+cd Retrieval_Augmente_Generation
 uvicorn main:app --reload
 ```
 You can access the app by navigating to http://127.0.0.1:8000 in your browser.
