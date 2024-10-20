@@ -40,12 +40,13 @@ async def trigger_function():
     return JSONResponse(result)
 
 
+
 @app.post("/upload-files/")
 async def upload_files(files: list[UploadFile] = File(...)):
     try:
         convert_survey_excel_to_csv(log_filename).verify_folder(r"Input")
         for file in files:
-            file_location = os.path.join(r"Input", file.filename)
+            file_location = os.path.join(os.getcwd(), r"Input", file.filename)
             with open(file_location, "wb+") as file_object:
                 shutil.copyfileobj(file.file, file_object)
         logger.info("Files Uploaded")
