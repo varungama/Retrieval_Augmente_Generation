@@ -1,10 +1,9 @@
-/* Basic Reset */
+* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 /* Body Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,7 +16,6 @@ body {
     min-height: 100vh;
     padding: 20px;
 }
-
 /* Heading Styles */
 h1 {
     font-size: 26px;
@@ -25,7 +23,6 @@ h1 {
     color: #222;
     text-align: center;
 }
-
 /* Button Styles */
 button {
     background-color: #5c67f2; /* Primary color */
@@ -39,12 +36,10 @@ button {
     transition: background-color 0.3s, transform 0.2s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 button:hover {
     background-color: #4a54e1; /* Darker shade on hover */
     transform: translateY(-2px); /* Slight lift effect */
 }
-
 /* Chatbox Styles */
 #chatbox {
     width: 100%;
@@ -58,17 +53,14 @@ button:hover {
     overflow-y: auto; /* Scrollable */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 /* Chat Message Styles */
 #chatbox p {
     margin: 10px 0;
     line-height: 1.5; /* Increased line height for readability */
 }
-
 #chatbox strong {
     color: #5c67f2; /* Matching primary color for speaker labels */
 }
-
 /* Input Styles */
 input[type="text"] {
     width: calc(100% - 22px); /* Full width minus padding */
@@ -80,22 +72,18 @@ input[type="text"] {
     margin-bottom: 10px;
     transition: border-color 0.3s;
 }
-
 input[type="text"]:focus {
     border-color: #5c67f2; /* Highlight border color on focus */
     outline: none; /* Remove default outline */
 }
-
 /* Responsive Styles */
 @media (max-width: 768px) {
     h1 {
         font-size: 22px; /* Smaller heading on mobile */
     }
-
     button {
         width: 100%; /* Full-width buttons on mobile */
     }
-
     input[type="text"] {
         width: 100%; /* Full-width input on mobile */
     }
