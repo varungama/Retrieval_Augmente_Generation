@@ -14,6 +14,7 @@ from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.chains import RetrievalQA
 from custom_logger import get_logger
 
+
 class Rag_model:
     def __init__(self, log_filename, folder_path=r'output', device = "cpu", search_type="similarity_score_threshold"):
         self.logger = get_logger(log_filename)
@@ -69,6 +70,7 @@ class Rag_model:
             # docs = retriever.get_relevant_documents(self.query)
             # qachain = load_qa_chain(llm, chain_type="stuff", prompt=prompt)
             # chain({"input_documents": docs, "question": self.query}, return_only_outputs=False)
+            self.logger.info(f"Model configured successfully")
             return qachain#, retriever
         except Exception as e:
             self.logger.error(f"function rag: {e}", exc_info=True)

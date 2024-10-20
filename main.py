@@ -15,15 +15,15 @@ logger = get_logger(log_filename)
 
 app = FastAPI()
 logger.info("Process Started")
-model = Rag_model(log_filename).rag()
+model = Rag_model(log_filename=log_filename).rag()
 
 # Simulate the backend function processing
 async def backend_function():
     try:
-        preprocessing_status = convert_survey_excel_to_csv(log_filename).read_data()
+        preprocessing_status = convert_survey_excel_to_csv(log_filename=log_filename).read_data()
         if preprocessing_status:
             global model#, retriever
-            model = Rag_model(log_filename).rag(new_data=True)
+            model = Rag_model(log_filename=log_filename).rag(new_data=True)
             # Replace this with your actual logic
             return {"status": "success", "message": "Data Preprocessed sucessfully"}
         else:
@@ -40,11 +40,10 @@ async def trigger_function():
     return JSONResponse(result)
 
 
-
 @app.post("/upload-files/")
 async def upload_files(files: list[UploadFile] = File(...)):
     try:
-        convert_survey_excel_to_csv(log_filename).verify_folder(r"Input")
+        convert_survey_excel_to_csv(log_filename=log_filename).verify_folder(r"Input")
         for file in files:
             file_location = os.path.join(os.getcwd(), r"Input", file.filename)
             with open(file_location, "wb+") as file_object:
@@ -70,6 +69,31 @@ async def ask_question(question: Question):
     except Exception as e:
         logger.error(f"function ask_question : {e}", exc_info=True)
         return JSONResponse({"query": question.question, "response": e})
+
+from fastapi.responses import StreamingResponse
+
+@app.get("/plot")
+async def plot_graph():
+    from graph import plots
+    folder_path = os.path.join(os.getcwd(), r"output")
+    if os.path.exists(folder_path):
+        # List the files in the folder
+        files = os.listdir(folder_path)
+        if files:
+            # Remove each file inside the folder
+            for file in files:
+                file_path = os.path.join(folder_path, file)
+                # Check if it's a file (not a directory)
+                if os.path.isfile(file_path):
+                    logger.info("Using Uploaded new data for generating graphs")
+                    img = plots(log_filename=log_filename,folder_path=folder_path).plot_grpahs()
+    else:
+        logger.info("Using deafult data for generating graphs")
+        img = plots(log_filename=log_filename).plot_grpahs()
+
+
+    # Return the plot as a StreamingResponse
+    return StreamingResponse(img, media_type="image/png")
 
 # Serve static files for the frontend
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

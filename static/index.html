@@ -66,10 +66,25 @@
                 alert(`Error: ${errorMessage}`);
                 }
             }
+
+        async function loadPlot() {
+            // Fetch the image from the backend
+            const response = await fetch('/plot');
+            const blob = await response.blob();
+
+            // Create an object URL for the image
+            const imgUrl = URL.createObjectURL(blob);
+
+            // Set the source of the image element
+            document.getElementById('plot-image').src = imgUrl;
+        }
+
     </script>
 </head>
-<body>
+<body onload="loadPlot()">
     <h1>Retrieval-Augmented Generation (RAG) For Provided the Survey Datasets</h1>
+    <h3>Model is ready to query on Sustainability Research & Christmas Research Data</h3>
+    <h3>If you want to work with another new data please upload the file and click preprocess and then make queries</h3>
     <!-- CSV & Excel File Upload -->
     <input type="file" id="files" accept=".csv, .xlsx" multiple><br><br>
     <button onclick="uploadFiles()">Upload Files</button>
@@ -83,5 +98,17 @@
     <!-- Question Input -->
     <input type="text" id="question" placeholder="Ask a question..."><br>
     <button onclick="askQuestion()">Ask</button>
+
+
+    <div class="container">
+        <h1>Dynamic Plot Display</h1>
+        <h3>Graphs generated from Default </h3>
+
+        <!-- Container for the Plot Image -->
+        <div class="plot-container">
+            <img id="plot-image" alt="Plot will be displayed here" />
+        </div>
+    </div>
+
 </body>
 </html>

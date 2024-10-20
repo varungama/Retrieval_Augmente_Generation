@@ -130,7 +130,8 @@ class convert_survey_excel_to_csv():
             ids_with_true_mask.remove("Questions")
             ids_with_true_mask.insert(0, "Gender")
             for i, sub_df in enumerate(sub_dfs):
-                filename = ids_with_true_mask[i][:11].replace(" ", "_")
+                filename = ids_with_true_mask[i][:12].replace(" ", "_")
+                print(filename)
                 cleaned_text = self.remove_punctuation(ids_with_true_mask[i])
                 if "Question" in cleaned_text:
                     sub_df.columns = ["Question or Query"] + list(sub_df.columns[1:])
@@ -155,3 +156,16 @@ class convert_survey_excel_to_csv():
         except Exception as e:
             self.logger.error(f"function data_preprocess : {e}", exc_info=True)
             return e
+
+    # def df_for_graphs(self):
+    #     graph_dict = {}
+    #     for dirpath, dirnames, filenames in os.walk(self.csv_folder):
+    #         for file in filenames:
+    #             if file == "Age.csv":
+    #                 age_df = pd.read_csv(os.path.join(dirpath, file), skiprows=[1,2])
+    #                 percentage_age_rows = age_df[age_df['Age'].str.contains('Percentage', case=False)].iloc[:, [0,2,3]]
+    #                 non_percentage_age_rows = age_df[~age_df['Age'].str.contains('Percentage', case=False)].iloc[:, [0,2,3]]
+    #                 graph_dict[f"{os.path.split(dirpath)[1]}_percentage_age_rows"] = percentage_age_rows
+    #                 graph_dict[f"{os.path.split(dirpath)[1]}_non_percentage_age_rows"] = non_percentage_age_rows
+    #                 # self.logger.info(graph_dict)
+    #     return graph_dict
